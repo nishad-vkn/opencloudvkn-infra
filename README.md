@@ -1,4 +1,4 @@
-﻿# opencloudvkn-infra
+# opencloudvkn-infra
 
 Public NixOS configuration for the OpenCloudVKN public VPS.
 

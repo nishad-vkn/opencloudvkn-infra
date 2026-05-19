@@ -1,4 +1,4 @@
-﻿{
+{
   description = "OpenCloudVKN base NixOS VPS profile";
 
   inputs = {
