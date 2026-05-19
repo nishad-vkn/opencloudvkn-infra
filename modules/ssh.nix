@@ -4,11 +4,6 @@
   services.openssh = {
     enable = true;
 
-    listenAddresses = [
-      { addr = "0.0.0.0"; port = 22; }
-      { addr = "::"; port = 22; }
-    ];
-
     hostKeys = [
       {
         path = "/etc/ssh/ssh_host_ed25519_key";
