@@ -23,7 +23,7 @@
       ];
 
       trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypQtVrp8Z0p4tl6pg0THpEEYpA="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
 
       warn-dirty = false;
@@ -63,6 +63,8 @@
     unzip
     pciutils
     usbutils
+    wireguard-tools
+    qrencode
   ];
 
   services.timesyncd.enable = true;

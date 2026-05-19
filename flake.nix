@@ -1,5 +1,5 @@
 {
-  description = "OpenCloudVKN base NixOS VPS profile";
+  description = "cloudvkn base NixOS VPS profile";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
@@ -25,6 +25,7 @@
           ./modules/ssh.nix
           ./modules/firewall.nix
           ./modules/caddy.nix
+          ./modules/wireguard.nix
         ];
       };
     };

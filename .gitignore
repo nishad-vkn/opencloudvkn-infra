@@ -1,8 +1,68 @@
+# OpenCloudVKN infra repo ignore rules
+
+# Nix build outputs
 result
 result-*
 .direnv/
+.envrc
+
+# Local editor files
 *.swp
 *.swo
 *~
 .vscode/
 .idea/
+
+# Runtime secrets
+secrets/
+secrets.yaml
+*.age
+*.sops.yaml
+
+# WireGuard private/runtime material
+wireguard/keys/
+wireguard/client-configs/
+wireguard/client-qrcodes/
+**/wireguard/keys/
+**/wireguard/client-configs/
+**/wireguard/client-qrcodes/
+
+# Private keys
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt.key
+id_rsa
+id_ed25519
+id_ecdsa
+id_dsa
+
+# SSH host keys
+ssh_host_*_key
+ssh_host_*_key.pub
+
+# Harmonia/Nix cache signing secret
+cache.secret
+harmonia/cache.secret
+**/harmonia/cache.secret
+
+# Secure Boot private material
+sbctl/
+**/sbctl/
+
+# Generated client VPN configs contain private keys
+*.conf.private
+wg-*.conf
+desktop-admin.conf
+user01.conf
+user02.conf
+user03.conf
+user04.conf
+user05.conf
+user06.conf
+
+# QR codes contain private keys
+*.qr.png
+client-qrcodes/
+*.png.private
