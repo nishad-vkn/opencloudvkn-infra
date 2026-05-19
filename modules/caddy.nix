@@ -23,7 +23,7 @@
           -Server
         }
 
-        respond "OpenCloudVKN base NixOS server is live." 200
+        respond "OpenCloudVKN base NixOS server is live and healthy." 200
       '';
     };
   };
