@@ -15,10 +15,6 @@ in
     "net.ipv6.conf.all.forwarding" = 1;
   };
 
-  networking.firewall.allowedUDPPorts = [
-    wgPort
-  ];
-
   networking.nat = {
     enable = true;
     externalInterface = "eth0";

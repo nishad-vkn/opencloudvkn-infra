@@ -4,7 +4,7 @@ Public NixOS configuration for the OpenCloudVKN public VPS.
 
 - Host: `vps-01`
 - IP:   `209.182.234.229`
-- DNS:  `opencloudvkn.com`
+- DNS:  `cloudvkn.com`
 
 ## Install command
 

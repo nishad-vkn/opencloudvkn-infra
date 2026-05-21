@@ -4,13 +4,23 @@
   networking.firewall = {
     enable = true;
 
+    # Public HTTPS services only
     allowedTCPPorts = [
-      22
       80
       443
+      22
+      2222
     ];
 
-    allowedUDPPorts = [ ];
+    # Public WireGuard
+    allowedUDPPorts = [
+      51820
+    ];
+
+    # SSH only through WireGuard
+    #interfaces.wg0.allowedTCPPorts = [
+    #  22
+    #];
 
     allowPing = true;
 

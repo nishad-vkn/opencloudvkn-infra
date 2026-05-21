@@ -2,7 +2,7 @@
 
 {
   networking.hostName = "vps-01";
-  networking.domain = "opencloudvkn.com";
+  networking.domain = "cloudvkn.com";
 
   time.timeZone = "Asia/Dubai";
   i18n.defaultLocale = "en_US.UTF-8";
