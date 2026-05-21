@@ -1,5 +1,5 @@
 {
-  description = "cloudvkn base NixOS VPS profile";
+  description = "cloudvkn NixOS VPS profile";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     disko.url = "github:nix-community/disko";
@@ -16,20 +16,35 @@
         modules = [
           disko.nixosModules.disko
           mailserver.nixosModules.mailserver
+
+          ./cloudvkn.nix
+          ./lib/acme.nix
+
           ./hosts/vps-01/disko.nix
           ./hosts/vps-01/hardware-configuration.nix
           ./hosts/vps-01/configuration.nix
+
           ./modules/base.nix
           ./modules/hardening.nix
+          ./modules/users.nix
           ./modules/ssh.nix
           ./modules/firewall.nix
-          ./modules/caddy.nix
-          ./modules/wireguard.nix
+          ./modules/webserver.nix
+          ./modules/wireguard.nix          # UNCHANGED — your 7 peers
+
           ./modules/postgresql.nix
-          ./modules/forgejo.nix
-          ./modules/cache.nix
-          ./modules/monitoring.nix
-          ./modules/mail.nix
+          ./modules/services/forgejo.nix
+          ./modules/services/cache.nix
+          ./modules/services/monitoring.nix
+          ./modules/services/mail.nix
+
+          # Enable the services here (central toggles).
+          {
+            cloudvkn.services.forgejo.enable = true;
+            cloudvkn.services.cache.enable = true;
+            cloudvkn.services.monitoring.enable = true;
+            cloudvkn.services.mail.enable = true;
+          }
         ];
       };
     };
