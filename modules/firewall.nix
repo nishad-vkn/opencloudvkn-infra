@@ -1,14 +1,13 @@
 { config, pkgs, lib, ... }:
-
 {
   networking.firewall = {
     enable = true;
 
-    # Public HTTPS services only
+    # Public TCP: SSH, HTTP, HTTPS, Forgejo git-SSH
     allowedTCPPorts = [
+      22
       80
       443
-      22
       2222
     ];
 
@@ -17,13 +16,12 @@
       51820
     ];
 
-    # SSH only through WireGuard
-    #interfaces.wg0.allowedTCPPorts = [
-    #  22
-    #];
+    # Internal-only services reachable over the VPN.
+    interfaces.wg0.allowedTCPPorts = [
+      3001   # Uptime Kuma
+    ];
 
     allowPing = true;
-
     logRefusedConnections = true;
     logRefusedPackets = false;
 

@@ -25,6 +25,7 @@
           ./modules/postgresql.nix
           ./modules/forgejo.nix
           ./modules/cache.nix
+          ./modules/monitoring.nix
         ];
       };
     };
