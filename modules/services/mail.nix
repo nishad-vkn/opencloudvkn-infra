@@ -30,4 +30,14 @@ lib.mkIf cfg.services.mail.enable {
     enableManageSieve = true;
     localDnsResolver = true;
   };
+
+  # ── IPv6 workaround ──────────────────────────────────────────────
+  # This VPS has broken outbound IPv6 (SSDNodes upstream). Postfix otherwise
+  # prefers IPv6 for delivery, hangs ~30s on the dead v6 path, then falls back
+  # to v4 — causing slow/failed sends to v6-capable MX (most corporate mail).
+  # Force IPv4 for all SMTP delivery until provider IPv6 is fixed.
+  services.postfix.settings.main = {
+    inet_protocols = "ipv4";
+    smtp_address_preference = "ipv4";
+  };
 }
