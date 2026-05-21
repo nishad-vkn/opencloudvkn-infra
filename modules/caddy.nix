@@ -43,6 +43,17 @@
         }
         reverse_proxy 127.0.0.1:5000
       '';
+
+      # Serve the MTA-STS policy file.
+      "mta-sts.cloudvkn.com".extraConfig = ''
+        header Content-Type "text/plain"
+        respond /.well-known/mta-sts.txt "version: STSv1
+mode: testing
+mx: mail.cloudvkn.com
+max_age: 604800
+" 200
+        respond 404
+      '';
     };
   };
 

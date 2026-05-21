@@ -3,22 +3,23 @@
   networking.firewall = {
     enable = true;
 
-    # Public TCP: SSH, HTTP, HTTPS, Forgejo git-SSH
     allowedTCPPorts = [
-      22
-      80
-      443
-      2222
+      22      # SSH
+      80      # HTTP (Caddy, ACME)
+      443     # HTTPS (Caddy)
+      2222    # Forgejo git-SSH
+      25      # SMTP (inbound mail)
+      465     # SMTPS (submission, implicit TLS)
+      587     # submission (STARTTLS)
+      993     # IMAPS
     ];
 
-    # Public WireGuard
     allowedUDPPorts = [
-      51820
+      51820   # WireGuard
     ];
 
-    # Internal-only services reachable over the VPN.
     interfaces.wg0.allowedTCPPorts = [
-      3001   # Uptime Kuma
+      3001    # Uptime Kuma (VPN only)
     ];
 
     allowPing = true;

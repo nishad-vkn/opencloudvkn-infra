@@ -4,8 +4,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+    mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.11";
+    mailserver.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, disko, ... }:
+  outputs = { self, nixpkgs, disko, mailserver, ... }:
     let
       system = "x86_64-linux";
     in {
@@ -13,6 +15,7 @@
         inherit system;
         modules = [
           disko.nixosModules.disko
+          mailserver.nixosModules.mailserver
           ./hosts/vps-01/disko.nix
           ./hosts/vps-01/hardware-configuration.nix
           ./hosts/vps-01/configuration.nix
@@ -26,6 +29,7 @@
           ./modules/forgejo.nix
           ./modules/cache.nix
           ./modules/monitoring.nix
+          ./modules/mail.nix
         ];
       };
     };
