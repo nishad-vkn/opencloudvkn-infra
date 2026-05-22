@@ -46,7 +46,7 @@
             cloudvkn.services.mail = {
               enable = true;
               fail2ban.enable = true;
-              antivirus.enable = false;
+              antivirus.enable = true;
               backup.enable = false;
               reporting.enable = false;
             };
