@@ -19,6 +19,7 @@
 
           ./cloudvkn.nix
           ./lib/acme.nix
+          ./modules/lib/mail-submission.nix
 
           ./hosts/vps-01/disko.nix
           ./hosts/vps-01/hardware-configuration.nix
@@ -33,8 +34,8 @@
           ./modules/wireguard.nix          # UNCHANGED — your 7 peers
 
           ./modules/postgresql.nix
-          ./modules/services/forgejo.nix
-          ./modules/services/cache.nix
+          ./modules/services/git
+          ./modules/services/cache
           ./modules/services/monitoring.nix
           ./modules/services/mail
 

@@ -17,6 +17,7 @@ lib.mkIf cfg.services.forgejo.enable {
     lfs.enable = true;
     settings = {
       DEFAULT.APP_NAME = "CloudVKN Git";
+
       server = {
         DOMAIN = "git.${cfg.domain}";
         ROOT_URL = "https://git.${cfg.domain}/";
@@ -28,11 +29,23 @@ lib.mkIf cfg.services.forgejo.enable {
         SSH_PORT = 2222;
         SSH_LISTEN_HOST = "0.0.0.0";
         SSH_LISTEN_PORT = 2222;
+        LANDING_PAGE = "login";        # no public homepage
       };
+
       service = {
         DISABLE_REGISTRATION = true;
-        REQUIRE_SIGNIN_VIEW = false;
+        REQUIRE_SIGNIN_VIEW = true;    # nothing visible without login
+        DEFAULT_KEEP_EMAIL_PRIVATE = true;
       };
+
+      # Outgoing mail via local Postfix as support@ (system notifications).
+      mailer = {
+        ENABLED = true;
+        PROTOCOL = "sendmail";
+        FROM = "support@${cfg.domain}";
+        SENDMAIL_PATH = "/run/wrappers/bin/sendmail";
+      };
+
       "cron.update_checker".ENABLED = false;
       session.COOKIE_SECURE = true;
       log.LEVEL = "Warn";
