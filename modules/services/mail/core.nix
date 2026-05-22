@@ -20,7 +20,7 @@ lib.mkIf cfg.services.mail.enable {
       ];
     };
 
-    # Reuse the wildcard ACME cert (name = domain, != mail fqdn => no minica hijack).
+    # Wildcard ACME cert (name = domain, != mail fqdn => no minica hijack).
     certificateScheme = "manual";
     certificateFile = "${certDir}/fullchain.pem";
     keyFile = "${certDir}/key.pem";
@@ -31,11 +31,7 @@ lib.mkIf cfg.services.mail.enable {
     localDnsResolver = true;
   };
 
-  # ── IPv6 workaround ──────────────────────────────────────────────
-  # This VPS has broken outbound IPv6 (SSDNodes upstream). Postfix otherwise
-  # prefers IPv6 for delivery, hangs ~30s on the dead v6 path, then falls back
-  # to v4 — causing slow/failed sends to v6-capable MX (most corporate mail).
-  # Force IPv4 for all SMTP delivery until provider IPv6 is fixed.
+  # Broken outbound IPv6 on this VPS -> force Postfix to IPv4 (avoids 30s stalls).
   services.postfix.settings.main = {
     inet_protocols = "ipv4";
     smtp_address_preference = "ipv4";

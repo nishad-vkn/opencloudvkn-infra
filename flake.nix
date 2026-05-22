@@ -36,14 +36,20 @@
           ./modules/services/forgejo.nix
           ./modules/services/cache.nix
           ./modules/services/monitoring.nix
-          ./modules/services/mail.nix
+          ./modules/services/mail
 
           # Enable the services here (central toggles).
           {
             cloudvkn.services.forgejo.enable = true;
             cloudvkn.services.cache.enable = true;
             cloudvkn.services.monitoring.enable = true;
-            cloudvkn.services.mail.enable = true;
+            cloudvkn.services.mail = {
+              enable = true;
+              fail2ban.enable = true;
+              antivirus.enable = false;
+              backup.enable = false;
+              reporting.enable = false;
+            };
           }
         ];
       };

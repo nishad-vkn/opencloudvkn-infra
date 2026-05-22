@@ -32,7 +32,14 @@ with lib;
       forgejo.enable    = mkEnableOption "Forgejo git (git.<domain>)";
       cache.enable      = mkEnableOption "Harmonia binary cache (cache.<domain>)";
       monitoring.enable = mkEnableOption "Uptime Kuma (wg-only)";
-      mail.enable       = mkEnableOption "Mail server (mail.<domain>)";
+
+      mail = {
+        enable          = mkEnableOption "Mail server (mail.<domain>)";
+        fail2ban.enable = mkEnableOption "Mail brute-force protection (fail2ban)";
+        antivirus.enable= mkEnableOption "ClamAV virus scanning (resource-capped)";
+        backup.enable   = mkEnableOption "Mail backups (borgbackup)";
+        reporting.enable= mkEnableOption "SRS + DMARC reporting + TLS-RPT";
+      };
     };
   };
 
