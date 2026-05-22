@@ -38,6 +38,7 @@
           ./modules/services/cache
           ./modules/services/monitoring.nix
           ./modules/services/prometheus.nix
+          ./modules/services/grafana.nix
           ./modules/services/web-fail2ban.nix
           ./modules/services/mail
 

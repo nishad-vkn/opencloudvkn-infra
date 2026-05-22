@@ -13,8 +13,8 @@ lib.mkIf cfg.services.monitoring.enable {
     sliceConfig = { MemoryHigh = "768M"; MemoryMax = "1G"; CPUQuota = "100%"; };
   };
 
-  # NixOS's uptime-kuma module already applies strong systemd hardening
-  # (ProtectControlGroups, ProtectSystem, etc.). Don't redeclare those —
-  # only attach our resource slice.
   systemd.services.uptime-kuma.serviceConfig.Slice = "monitoring.slice";
+
+  # Allow WG peers to reach monitoring UIs on the wg0 interface only.
+  networking.firewall.interfaces.wg0.allowedTCPPorts = [ 3001 3003 9090 ];
 }
