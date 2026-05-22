@@ -7,6 +7,14 @@ lib.mkIf cfg.services.monitoring.enable {
     enable = true;
     settings = { HOST = "10.88.0.1"; PORT = "3001"; };
   };
-  # First-run admin account is created in the UI; use support@cloudvkn.com
-  # as the ops login there. Notifications configured in-UI to support@.
+
+  systemd.slices.monitoring = {
+    description = "CloudVKN monitoring slice";
+    sliceConfig = { MemoryHigh = "768M"; MemoryMax = "1G"; CPUQuota = "100%"; };
+  };
+
+  # NixOS's uptime-kuma module already applies strong systemd hardening
+  # (ProtectControlGroups, ProtectSystem, etc.). Don't redeclare those —
+  # only attach our resource slice.
+  systemd.services.uptime-kuma.serviceConfig.Slice = "monitoring.slice";
 }

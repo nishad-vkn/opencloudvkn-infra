@@ -37,6 +37,8 @@
           ./modules/services/git
           ./modules/services/cache
           ./modules/services/monitoring.nix
+          ./modules/services/prometheus.nix
+          ./modules/services/web-fail2ban.nix
           ./modules/services/mail
 
           # Enable the services here (central toggles).

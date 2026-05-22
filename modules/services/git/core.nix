@@ -16,7 +16,7 @@ lib.mkIf cfg.services.forgejo.enable {
     stateDir = "/var/lib/forgejo";
     lfs.enable = true;
     settings = {
-      DEFAULT.APP_NAME = "CloudVKN Git";
+      DEFAULT.APP_NAME = "cVkn Git";
 
       server = {
         DOMAIN = "git.${cfg.domain}";
@@ -29,16 +29,16 @@ lib.mkIf cfg.services.forgejo.enable {
         SSH_PORT = 2222;
         SSH_LISTEN_HOST = "0.0.0.0";
         SSH_LISTEN_PORT = 2222;
-        LANDING_PAGE = "login";        # no public homepage
+        LANDING_PAGE = "login";
       };
 
       service = {
         DISABLE_REGISTRATION = true;
-        REQUIRE_SIGNIN_VIEW = true;    # nothing visible without login
+        REQUIRE_SIGNIN_VIEW = true;
         DEFAULT_KEEP_EMAIL_PRIVATE = true;
+        ENABLE_BASIC_AUTHENTICATION = true;
       };
 
-      # Outgoing mail via local Postfix as support@ (system notifications).
       mailer = {
         ENABLED = true;
         PROTOCOL = "sendmail";
@@ -48,9 +48,14 @@ lib.mkIf cfg.services.forgejo.enable {
 
       "cron.update_checker".ENABLED = false;
       session.COOKIE_SECURE = true;
-      log.LEVEL = "Warn";
+      log.LEVEL = "Info";   # Info so fail2ban can see failed-login lines
       security.INSTALL_LOCK = true;
-      other.SHOW_FOOTER_VERSION = false;
+
+      other = {
+        SHOW_FOOTER_VERSION = false;
+        SHOW_FOOTER_POWERED_BY = false;
+        SHOW_FOOTER_TEMPLATE_LOAD_TIME = false;
+      };
     };
   };
 }
