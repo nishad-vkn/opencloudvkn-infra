@@ -10,17 +10,25 @@ lib.mkIf cfg.services.mail.enable {
     fqdn = "mail.${cfg.domain}";
     domains = [ cfg.domain ];
 
-    loginAccounts."${cfg.adminUser}@${cfg.domain}" = {
-      hashedPasswordFile = "/var/lib/mail-secrets/nali.pass";
-      aliases = [
-        "support@${cfg.domain}"
-        "dmarc@${cfg.domain}"
-        "postmaster@${cfg.domain}"
-        "abuse@${cfg.domain}"
-      ];
+    loginAccounts = {
+      # Primary admin mailbox (Forgejo login, personal).
+      "${cfg.adminUser}@${cfg.domain}" = {
+        hashedPasswordFile = "/var/lib/mail-secrets/nali.pass";
+        aliases = [
+          "postmaster@${cfg.domain}"
+          "abuse@${cfg.domain}"
+        ];
+      };
+
+      # Real ops mailbox: system/notification sender + monitoring login.
+      "support@${cfg.domain}" = {
+        hashedPasswordFile = "/var/lib/mail-secrets/support.pass";
+        aliases = [
+          "dmarc@${cfg.domain}"
+        ];
+      };
     };
 
-    # Wildcard ACME cert (name = domain, != mail fqdn => no minica hijack).
     certificateScheme = "manual";
     certificateFile = "${certDir}/fullchain.pem";
     keyFile = "${certDir}/key.pem";
@@ -31,7 +39,6 @@ lib.mkIf cfg.services.mail.enable {
     localDnsResolver = true;
   };
 
-  # Broken outbound IPv6 on this VPS -> force Postfix to IPv4 (avoids 30s stalls).
   services.postfix.settings.main = {
     inet_protocols = "ipv4";
     smtp_address_preference = "ipv4";

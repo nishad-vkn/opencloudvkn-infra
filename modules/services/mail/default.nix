@@ -9,5 +9,7 @@
     ./antivirus.nix
     ./backup.nix
     ./reporting.nix
+    ./watchdog.nix
+    ./healthcheck.nix
   ];
 }
