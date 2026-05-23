@@ -6,15 +6,24 @@ lib.mkIf cfg.services.monitoring.enable {
   services.prometheus = {
     enable = true;
     port = 9090;
-    listenAddress = "10.88.0.1";   # WireGuard-only
+    listenAddress = "10.88.0.1";     # WireGuard-only
     globalConfig.scrape_interval = "30s";
     retentionTime = "30d";
 
+    # Disable remote-write receiver + admin API (attack surface).
+    extraFlags = [
+      "--web.enable-lifecycle=false"
+      "--web.enable-admin-api=false"
+      "--storage.tsdb.retention.size=2GB"
+    ];
+
     exporters.node = {
       enable = true;
-      listenAddress = "127.0.0.1";
+      listenAddress = "127.0.0.1";    # localhost only; Prometheus scrapes locally
       port = 9100;
       enabledCollectors = [ "systemd" "processes" ];
+      # Trim default collectors we don't need (smaller surface, less noise).
+      disabledCollectors = [ "arp" "bcache" "bonding" "infiniband" "ipvs" "nfs" "nfsd" "xfs" "zfs" ];
     };
 
     scrapeConfigs = [

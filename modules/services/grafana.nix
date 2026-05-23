@@ -11,19 +11,38 @@ lib.mkIf cfg.services.monitoring.enable {
         http_port = 3003;
         domain = "10.88.0.1";
         root_url = "http://10.88.0.1:3003/";
+        enable_gzip = true;
       };
+
       security = {
         admin_user = "nali";
         admin_password = "$__file{/var/lib/grafana/admin.pass}";
         disable_gravatar = true;
-        cookie_secure = false;   # http over wg; no public TLS
+        cookie_secure = false;
+        cookie_samesite = "strict";
+        content_security_policy = true;
       };
-      analytics.reporting_enabled = false;
-      analytics.check_for_updates = false;
-      users.allow_sign_up = false;
-      users.allow_org_create = false;
 
-      # Email via local Postfix as support@ (alerts, invites, resets).
+      users = {
+        allow_sign_up = false;
+        allow_org_create = false;
+        auto_assign_org = true;
+        default_theme = "dark";
+      };
+
+      "auth.anonymous".enabled = false;
+      "auth.basic".enabled = true;
+
+      analytics = {
+        reporting_enabled = false;
+        check_for_updates = false;
+        check_for_plugin_updates = false;
+        feedback_links_enabled = false;
+      };
+
+      news.news_feed_enabled = false;
+      snapshots.external_enabled = false;
+
       smtp = {
         enabled = true;
         host = "127.0.0.1:25";
@@ -31,6 +50,8 @@ lib.mkIf cfg.services.monitoring.enable {
         from_name = "CloudVKN Grafana";
         skip_verify = true;
       };
+
+      log.level = "warn";
     };
 
     provision = {
@@ -41,22 +62,11 @@ lib.mkIf cfg.services.monitoring.enable {
           type = "prometheus";
           url = "http://10.88.0.1:9090";
           isDefault = true;
-        }
-      ];
-      # Auto-load the Node Exporter Full dashboard (ID 1860) + others.
-      dashboards.settings.providers = [
-        {
-          name = "default";
-          options.path = "/var/lib/grafana/dashboards";
+          jsonData.timeInterval = "30s";
         }
       ];
     };
   };
-
-  # Place dashboard JSON files for auto-provisioning.
-  systemd.tmpfiles.rules = [
-    "d /var/lib/grafana/dashboards 0750 grafana grafana - -"
-  ];
 
   systemd.services.grafana = {
     after = [ "wireguard-wg0.service" "network-online.target" "postfix.service" ];
@@ -64,6 +74,5 @@ lib.mkIf cfg.services.monitoring.enable {
     serviceConfig.Slice = "monitoring.slice";
   };
 
-  # Open wg0 port (also in firewall.nix; harmless if duplicated via mkAfter).
   networking.firewall.interfaces.wg0.allowedTCPPorts = [ 3003 ];
 }
