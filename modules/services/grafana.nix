@@ -60,7 +60,7 @@ lib.mkIf cfg.services.monitoring.enable {
         {
           name = "Prometheus";
           type = "prometheus";
-          url = "http://10.88.0.1:9090";
+          url = "http://127.0.0.1:9090";
           isDefault = true;
           jsonData.timeInterval = "30s";
         }
