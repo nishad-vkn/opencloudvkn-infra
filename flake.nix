@@ -6,8 +6,10 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.11";
     mailserver.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, disko, mailserver, ... }:
+  outputs = { self, nixpkgs, disko, mailserver, sops-nix, ... }:
     let
       system = "x86_64-linux";
     in {
@@ -16,6 +18,8 @@
         modules = [
           disko.nixosModules.disko
           mailserver.nixosModules.mailserver
+          sops-nix.nixosModules.sops
+          ./modules/sops.nix
 
           ./cloudvkn.nix
           ./lib/acme.nix

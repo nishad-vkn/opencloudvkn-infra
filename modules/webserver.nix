@@ -62,7 +62,32 @@ max_age: 604800
         "cache.${d}".extraConfig = ''
           ${tlsLine}
           ${secHeaders}
-          reverse_proxy 127.0.0.1:5000
+
+          @root path /
+          handle @root {
+            header Content-Type "text/html; charset=utf-8"
+            respond `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>cVkn Nix Cache</title>
+<style>body{background:#0d1117;color:#c9d1d9;font-family:ui-monospace,Menlo,monospace;max-width:760px;margin:60px auto;padding:0 20px;line-height:1.6}h1{color:#58a6ff}pre{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:16px;overflow:auto;font-size:.85rem}.key{color:#7ee787;word-break:break-all}a{color:#58a6ff}</style></head>
+<body><h1>cVkn Nix Binary Cache</h1>
+<p>Public Nix binary cache for cloudvkn projects.</p>
+<h3>Add to your Nix config</h3>
+<pre>nix.settings = {
+  substituters = [ "https://cache.cloudvkn.com" "https://cache.nixos.org" ];
+  trusted-public-keys = [
+    "cache.cloudvkn.com-1:3h7ExdxdAmb9DK6rvVLkFc0TIcrAVZjMhLdHPVAr0Bg="
+    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+  ];
+};</pre>
+<h3>Cache info</h3>
+<p><a href="/nix-cache-info">/nix-cache-info</a> &middot; Priority 30 &middot; Harmonia</p>
+<p style="color:#8b949e;font-size:.8rem">Public key:<br><span class="key">cache.cloudvkn.com-1:3h7ExdxdAmb9DK6rvVLkFc0TIcrAVZjMhLdHPVAr0Bg=</span></p>
+</body></html>` 200
+          }
+
+          handle {
+            reverse_proxy 127.0.0.1:5000
+          }
         '';
       })
     ];
