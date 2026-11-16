@@ -38,6 +38,7 @@
           ./modules/wireguard.nix          # UNCHANGED — your 7 peers
 
           ./modules/postgresql.nix
+          ./modules/forgejo-backup.nix
           ./modules/services/git
           ./modules/services/cache
           ./modules/services/monitoring.nix
