@@ -164,6 +164,45 @@ in
 
       forgejo_was_active=0
 
+      # Host secrets and mail data. Copied after Forgejo is back up so
+      # they add no git downtime. The restic repository is encrypted.
+      # /etc/backup (B2 credentials + restic password) is deliberately
+      # excluded: it is needed to open this repository, so keep it offline.
+      echo "Copying host secrets and mail data"
+
+      ${pkgs.coreutils}/bin/install \
+        -d \
+        -o root \
+        -g root \
+        -m 0700 \
+        "$stage_new/host"
+
+      for src in \
+        /etc/ssh/ssh_host_ed25519_key \
+        /etc/ssh/ssh_host_ed25519_key.pub \
+        /etc/wireguard \
+        /var/lib/secrets \
+        /var/lib/mail-secrets \
+        /var/lib/grafana/admin.pass \
+        /var/dkim \
+        /var/vmail \
+        /var/sieve
+      do
+        if [ -e "$src" ]; then
+          ${pkgs.rsync}/bin/rsync \
+            --archive \
+            --relative \
+            --hard-links \
+            --acls \
+            --xattrs \
+            --numeric-ids \
+            "$src" \
+            "$stage_new/host/"
+        else
+          echo "WARNING: $src missing; skipped" >&2
+        fi
+      done
+
       echo "Publishing completed staging generation"
 
       ${pkgs.coreutils}/bin/rm -rf "$stage_old"
